@@ -24,20 +24,18 @@ i need to create a class Client with top level methods:
 
 ```ts
 class Client {
-    getCountries<Include extends CountryInclude, Select extends CountrySelect>(
-        req: GetCountriesRequest<Include, Select>,
-    ): Selection<Countries, Include, Select> {
-        const { query, variables } = buildQuery(req, 'getCountries')
-    }
+  getCountries<Include extends CountryInclude, Select extends CountrySelect>(
+    req: GetCountriesRequest<Include, Select>
+  ): Selection<Countries, Include, Select> {
+    const { query, variables } = buildQuery(req, 'getCountries');
+  }
 }
 
 type GetCountriesRequest<I, S> = {
-    args: GetCountriesArgs
-    select: Pick<Countries, S>
-    include: I
-}
+  args: GetCountriesArgs;
+  select: Pick<Countries, S>;
+  include: I;
+};
 
-function buildQuery()
+function buildQuery();
 ```
-
-

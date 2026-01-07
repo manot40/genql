@@ -3,6 +3,7 @@ import type { Config } from './config';
 
 import kleur from 'kleur';
 import yargs from 'yargs';
+
 import { generate } from './main';
 import { validateConfigs } from './tasks/validateConfigs';
 import { existsSync, readFileSync } from 'fs';

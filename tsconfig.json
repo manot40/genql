@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
-    "lib": ["dom", "es2023", "esnext.asynciterable"],
+    "lib": ["dom", "es2023", "esnext.asynciterable"]
   },
   "include": ["src"],
   "exclude": [
@@ -25,6 +25,6 @@
     "**/*.case.ts",
     "**/*.test.ts",
     "**/__tests__",
-    "src/testHelpers/**/*",
-  ],
+    "src/testHelpers/**/*"
+  ]
 }

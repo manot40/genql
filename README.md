@@ -11,7 +11,7 @@
 </div>
 
 > [!IMPORTANT]
-> Genql is building a cloud platform to automate SDK generation in multiple languages, docs website with examples, changelog website and more. 
+> Genql is building a cloud platform to automate SDK generation in multiple languages, docs website with examples, changelog website and more.
 > Fill [this form](https://tally.so/r/mK1GWM) if you are interested!
 
 Read the [quick start guide](https://genql.dev/docs) to generate your client and start writing queries.
@@ -20,14 +20,14 @@ You can stay up to date with the latest changes subscribing to the [Genql change
 
 **Features**
 
--   ✅ Type completion & Type validation
--   🍃 No dependencies (not even graphql)
--   ⚡️ [Can easily fetch all scalar fields in a type](https://genql.dev/docs/usage/fetch-all-fields-on-a-type)
--   🐎 [Works with any client (Apollo, Relay, etc)](https://genql.dev/docs/usage/integrate-with-other-graphql-clients)
--   🥃 [Support for Subscriptions](https://genql.dev/docs/usage/subscriptions)
--   🔋 [Built in batching support](https://genql.dev/docs/usage/batching-queries)
--   ↔️ [Easy migrate existing GraphQL queries to Genql code](https://genql.dev/converter)
--   🚂 Works in browser, Node, Deno, Cloudflare workers, Bun and more
+- ✅ Type completion & Type validation
+- 🍃 No dependencies (not even graphql)
+- ⚡️ [Can easily fetch all scalar fields in a type](https://genql.dev/docs/usage/fetch-all-fields-on-a-type)
+- 🐎 [Works with any client (Apollo, Relay, etc)](https://genql.dev/docs/usage/integrate-with-other-graphql-clients)
+- 🥃 [Support for Subscriptions](https://genql.dev/docs/usage/subscriptions)
+- 🔋 [Built in batching support](https://genql.dev/docs/usage/batching-queries)
+- ↔️ [Easy migrate existing GraphQL queries to Genql code](https://genql.dev/converter)
+- 🚂 Works in browser, Node, Deno, Cloudflare workers, Bun and more
 
 ## Example
 
@@ -43,43 +43,43 @@ genql --schema ./schema.graphql --output ./generated
 Then you can use your client as follow
 
 ```js
-import { createClient, everything } from './generated'
-const client = createClient()
+import { createClient, everything } from './generated';
+const client = createClient();
 
 client
-    .query({
-        countries: {
-            // pass arguments to the query
-            __args: {
-                filter: {
-                    currency: {
-                        eq: 'EUR',
-                    },
-                },
-            },
-            name: true,
-            code: true,
-            nestedField: {
-                // fetch all scalar fields
-                __scalar: true,
-            },
+  .query({
+    countries: {
+      // pass arguments to the query
+      __args: {
+        filter: {
+          currency: {
+            eq: 'EUR',
+          },
         },
-    })
-    .then(console.log)
+      },
+      name: true,
+      code: true,
+      nestedField: {
+        // fetch all scalar fields
+        __scalar: true,
+      },
+    },
+  })
+  .then(console.log);
 ```
 
 The code above will fetch the graphql query below
 
 ```graphql
 query {
-    countries(filter: { currency: { eq: "EUR" } }) {
-        name
-        code
-        nestedField {
-            scalarField1
-            scalarField2
-        }
+  countries(filter: { currency: { eq: "EUR" } }) {
+    name
+    code
+    nestedField {
+      scalarField1
+      scalarField2
     }
+  }
 }
 ```
 
@@ -87,11 +87,11 @@ query {
 
 Genql has a lot of benefits over writing graphql queries by hand:
 
--   Writing queries is faster thanks to TypeScript auto completion
--   You can safely update your schema and be sure your queries are still valid
--   You can fetch all scalar fields in a type with `__scalar: true`
--   No `graphql` package dependency, no runtime parsing of queries
--   You have to generate the client only after your schema changes, not after every query change
+- Writing queries is faster thanks to TypeScript auto completion
+- You can safely update your schema and be sure your queries are still valid
+- You can fetch all scalar fields in a type with `__scalar: true`
+- No `graphql` package dependency, no runtime parsing of queries
+- You have to generate the client only after your schema changes, not after every query change
 
 ---
 

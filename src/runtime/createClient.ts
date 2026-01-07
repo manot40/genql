@@ -1,6 +1,7 @@
-import { type BatchOptions, createFetcher } from './fetcher';
 import type { ExecutionResult, LinkedType } from './types';
-import { generateGraphqlOperation, type GraphqlOperation } from './generateGraphqlOperation';
+
+import { type BatchOptions, createFetcher } from './fetcher';
+import { type GraphqlOperation, generateGraphqlOperation } from './generateGraphqlOperation';
 
 export type Headers = HeadersInit | (() => HeadersInit) | (() => Promise<HeadersInit>);
 
