@@ -3,7 +3,7 @@
   "name": "@manot40/genql-cli",
   "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://genql.dev",
   "description": "Generate a TypeScript SDK for any GraphQl API",
   "keywords": [
