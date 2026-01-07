@@ -1,0 +1,30 @@
+import type { GraphQLUnionType } from 'graphql';
+import type { RenderContext } from '../common/RenderContext';
+
+import uniq from 'lodash-es/uniq.js';
+
+import { typeComment } from '../common/comment';
+import { requestTypeName } from './requestTypeName';
+
+export const unionType = (type: GraphQLUnionType, ctx: RenderContext) => {
+  let types = [...type.getTypes()];
+  if (ctx.config?.sortProperties) {
+    types = types.sort();
+  }
+  const fieldStrings = types.map((t) => `on_${t.name}?:${requestTypeName(t)}`);
+
+  const commonInterfaces = uniq(types.map((x) => x.getInterfaces()).flat());
+  fieldStrings.push(
+    ...commonInterfaces.map((type) => {
+      return `on_${type.name}?: ${requestTypeName(type)}`;
+    })
+  );
+
+  fieldStrings.push('__typename?: boolean | number');
+
+  ctx.addCodeBlock(
+    `${typeComment(type)}export interface ${requestTypeName(
+      type
+    )}{\n${fieldStrings.map((x) => '    ' + x).join(',\n')}\n}`
+  );
+};
