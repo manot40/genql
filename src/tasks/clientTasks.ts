@@ -1,6 +1,6 @@
 import type { Config } from '../config';
 
-import fsx from 'fs-extra';
+import fs from 'node:fs/promises';
 import url from 'node:url';
 import path from 'node:path';
 
@@ -44,13 +44,18 @@ export const clientTasks = (config: Config): ListrTask[] => {
     {
       title: `copy runtime files`,
       async task() {
-        // copy files from runtime folder to output
-        await fsx.ensureDir(path.resolve(output, 'runtime'));
-        let files = await fsx.readdir(runtimeFolderPath);
-        for (let file of files) {
-          let contents = await fsx.readFile(path.resolve(runtimeFolderPath, file), 'utf-8');
-          contents = '// @ts-nocheck\n' + contents;
-          await fsx.writeFile(path.resolve(output, 'runtime', file), contents);
+        const files = await fs.readdir(runtimeFolderPath);
+        const target = path.resolve(output, 'runtime');
+        const exists = await fs
+          .access(target)
+          .then(() => true)
+          .catch(() => false);
+
+        if (!exists) await fs.mkdir(target, { recursive: true });
+
+        for (const file of files) {
+          const raw = await fs.readFile(path.resolve(runtimeFolderPath, file), 'utf-8');
+          await fs.writeFile(path.resolve(output, 'runtime', file), `// @ts-nocheck\n${raw};`, 'utf-8');
         }
       },
     },

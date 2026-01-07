@@ -2,71 +2,57 @@ import type { GraphQLSchemaValidationOptions } from 'graphql/type/schema';
 
 import { buildClientSchema, getIntrospectionQuery, type ExecutionResult } from 'graphql';
 
-import { stringifyQuery } from 'ufo';
-
 export interface SchemaFetcher {
   (query: string, fetchImpl: typeof fetch): Promise<ExecutionResult>;
 }
 
-export const fetchSchema = async ({
-  endpoint,
-  usePost = true,
-  headers,
-  timeout = 20 * 1000,
-  options,
-}: {
+export interface QueryFetch {
   endpoint: string;
   usePost?: boolean;
   timeout?: number;
   headers?: Record<string, string>;
   options?: GraphQLSchemaValidationOptions;
-}) => {
-  let controller = new AbortController();
-  let id = setTimeout(() => {
-    controller.abort();
-  }, timeout);
-  const response = await fetch(
-    usePost ? endpoint : `${endpoint}?${stringifyQuery({ query: getIntrospectionQuery() })}`,
-    {
-      signal: controller.signal,
-      ...(usePost
-        ? {
-            method: usePost ? 'POST' : 'GET',
-            body: JSON.stringify({ query: getIntrospectionQuery() }),
-            headers: {
-              ...headers,
-              'Content-Type': 'application/json',
-            },
-          }
-        : {
-            headers,
-          }),
-    }
-  );
-  clearTimeout(id);
-  if (!response.ok) {
-    throw new Error(`introspection for ${endpoint} failed, ${response.status} ${response.statusText}`);
+}
+
+export const fetchSchema = async (queryFetchOptions: QueryFetch) => {
+  const { headers, endpoint, usePost = true, timeout = 20 * 1000, options } = queryFetchOptions;
+
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  const query = new URLSearchParams({ query: getIntrospectionQuery() });
+
+  const fetchOptions: RequestInit = { signal: controller.signal, headers };
+
+  if (usePost) {
+    fetchOptions.headers = { ...headers, 'Content-Type': 'application/json' };
+    fetchOptions.method = 'POST';
+    fetchOptions.body = JSON.stringify({ query: getIntrospectionQuery() });
   }
 
-  const result = await response.json().catch((e) => {
-    const contentType = response.headers.get('Content-Type');
+  const res = await fetch(usePost ? endpoint : `${endpoint}?${query.toString()}`, fetchOptions);
 
+  clearTimeout(id);
+
+  if (!res.ok) {
+    throw new Error(`Introspection for ${endpoint} failed, ${res.status} ${res.statusText}`);
+  }
+
+  const result = await res.json().catch(() => {
+    const contentType = res.headers.get('Content-Type');
     throw new Error(
-      `endpoint '${endpoint}' did not return valid json, content type is ${contentType}, check that your endpoint points to a valid graphql api`
+      `Endpoint '${endpoint}' did not return valid json, content type is ${contentType}, check that your endpoint points to a valid graphql API`
     );
   });
+
   if (!result.data) {
     throw new Error(`introspection for ${endpoint} failed: ${JSON.stringify(result).slice(0, 400)}...`);
   }
 
-  // console.log(result.data)
-  // console.log(JSON.stringify(result.data, null, 4))
-
   return buildClientSchema(result.data, options);
 };
 
-export function fetchSchemaWithRetry(args: Parameters<typeof fetchSchema>[0]) {
-  for (let usePost of [true, false]) {
+export function fetchSchemaWithRetry(args: QueryFetch) {
+  for (const usePost of [true, false]) {
     try {
       return fetchSchema({ ...args, usePost });
     } catch (e) {
