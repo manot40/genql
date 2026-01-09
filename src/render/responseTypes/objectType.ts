@@ -23,7 +23,7 @@ export const objectType = (type: GraphQLObjectType | GraphQLInterfaceType, ctx: 
     .map((f) => {
       return `${fieldComment(f)}${f.name}: ${renderTyping(f.type)}`;
     })
-    .concat([`__typename: ${typeNames.length > 0 ? typeNames.map((t) => `'${t}'`).join('|') : 'string'}`]);
+    .concat([`$typeName: ${typeNames.length > 0 ? typeNames.map((t) => `'${t}'`).join('|') : 'string'}`]);
   // add indentation
   fieldStrings = fieldStrings.map((x) =>
     x

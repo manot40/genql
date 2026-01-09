@@ -3,11 +3,11 @@ import { FieldsSelection } from './runtime/typeSelection';
 // types requirements
 /*
 - no arguments, only request objects
-    - response type picks from request type 
+    - response type picks from request type
         - at first level
         - at nested level
-    - response type has all fields if __scalar is present
-    - response type does not have __scalar field
+    - response type has all fields if $scalar is present
+    - response type does not have $scalar field
         - at first level
         - at nested levels
     - response type is union of the on_ fields values (after their selection)
@@ -66,9 +66,9 @@ type SRC = {
       };
     };
   };
-  union: { a: string; __isUnion?: true } | { a: string; b: string; __isUnion?: true };
+  union: { a: string; $isUnion?: true } | { a: string; b: string; $isUnion?: true };
   nesting: {
-    nestedUnion: { a: string; __isUnion?: true } | { a: string; b: string; __isUnion?: true };
+    nestedUnion: { a: string; $isUnion?: true } | { a: string; b: string; $isUnion?: true };
   };
   xxx: {
     xxx: boolean;
@@ -83,7 +83,7 @@ type SRC = {
       x: number;
       y: number;
     };
-    union: { a: string; __isUnion?: true } | { a: string; b: string; __isUnion?: true };
+    union: { a: string; $isUnion?: true } | { a: string; b: string; $isUnion?: true };
     list: {
       x: number;
       a: string;
@@ -104,10 +104,10 @@ describe('pick', () => {
       },
     },
     argumentSyntax: {
-      __args: { x: 3 },
+      $args: { x: 3 },
       a: 1,
       nesting: {
-        __scalar: 1,
+        $scalar: 1,
       },
     },
   };
@@ -154,21 +154,21 @@ describe('pick', () => {
   );
 });
 
-describe('__scalar', () => {
+describe('$scalar', () => {
   const req = {
-    __name: 'name',
+    $name: 'name',
     category: {
-      __scalar: 1,
+      $scalar: 1,
       nested1: {
         a: 1,
       },
     },
     argumentSyntax: {
-      __args: { a: 7 },
-      __scalar: 1,
+      $args: { a: 7 },
+      $scalar: 1,
     },
     argumentScalar: {
-      __args: { x: 9 },
+      $args: { x: 9 },
     },
   };
   const z: FieldsSelection<SRC, typeof req> = {} as any;
@@ -199,17 +199,17 @@ describe('__scalar', () => {
     })
   );
   test(
-    '__scalar is not present',
+    '$scalar is not present',
     dontExecute(() => {
       // @ts-expect-error
-      z.category.__scalar;
+      z.category.$scalar;
     })
   );
   test(
-    '__name is not present',
+    '$name is not present',
     dontExecute(() => {
-      // @ts-expect-error __name
-      z.__name;
+      // @ts-expect-error $name
+      z.$name;
     })
   );
   test(
@@ -240,7 +240,7 @@ describe('optional fields', () => {
     },
     category: {
       optionalFieldsNested: {
-        __scalar: 1,
+        $scalar: 1,
       },
     },
     argumentSyntax: {
@@ -281,7 +281,7 @@ describe('optional fields', () => {
     })
   );
   test(
-    'optional fields are preserved in __scalar',
+    'optional fields are preserved in $scalar',
     dontExecute(() => {
       // @ts-expect-error
       z.optionalFields.a.toLocaleLowerCase;
@@ -309,7 +309,7 @@ describe('unions', () => {
     union: {
       onX: {
         a: 1,
-        __scalar: 1,
+        $scalar: 1,
       },
     },
     nesting: {
@@ -341,12 +341,12 @@ describe('unions', () => {
     })
   );
   test(
-    'does not have __isUnion',
+    'does not have $isUnion',
     dontExecute(() => {
       // @ts-expect-error
-      z.union.__isUnion;
+      z.union.$isUnion;
       // @ts-expect-error
-      z.nesting.nestedUnion.__isUnion;
+      z.nesting.nestedUnion.$isUnion;
     })
   );
   test(
@@ -389,8 +389,8 @@ describe('arrays', () => {
       optional: 1,
     },
     nested: {
-      __args: { x: 1 },
-      __scalar: 1,
+      $args: { x: 1 },
+      $scalar: 1,
       list: {
         edges: {
           x: 1,
@@ -478,14 +478,14 @@ test(
   dontExecute(() => {
     interface ForkConnection {
       edges?: (ForkEdge | undefined)[];
-      __typename?: 'ForkConnection';
+      $typeName?: 'ForkConnection';
     }
 
     interface ForkEdge {
       cursor?: string;
       node?: { x: string; y: string };
       nodes?: { x?: string; y?: string }[];
-      __typename?: 'ForkEdge';
+      $typeName?: 'ForkEdge';
     }
 
     // issue
@@ -497,7 +497,7 @@ test(
             x: 1;
           };
           nodes: {
-            __scalar: 1;
+            $scalar: 1;
           };
         };
       }
@@ -515,8 +515,8 @@ test(
 
 // {
 //     // only one union
-//     type One = { one: string; __typename: string }
-//     type Two = { two: string; __typename: string }
+//     type One = { one: string; $typeName: string }
+//     type Two = { two: string; $typeName: string }
 //     type SRC = {
 //         union?: {
 //             __union: One | Two
@@ -524,7 +524,7 @@ test(
 //                 on_One: One
 //                 on_Two: Two
 //             }
-//             __typename: 'One' | 'Two'
+//             $typeName: 'One' | 'Two'
 //         }
 //     }
 //     type DST = {
@@ -543,8 +543,8 @@ test(
 
 // {
 //     // 2 unions together
-//     type One = { one: string; __typename: string }
-//     type Two = { two: string; __typename: string }
+//     type One = { one: string; $typeName: string }
+//     type Two = { two: string; $typeName: string }
 //     type SRC = {
 //         union?: {
 //             __union: One | Two
@@ -552,7 +552,7 @@ test(
 //                 on_One: One
 //                 on_Two: Two
 //             }
-//             __typename: 'One' | 'Two'
+//             $typeName: 'One' | 'Two'
 //         }
 //     }
 //     type DST = {
@@ -571,21 +571,21 @@ test(
 
 // {
 //     // without top level object
-//     type One = { one?: string; __typename?: string }
-//     type Two = { two?: string; __typename?: string }
+//     type One = { one?: string; $typeName?: string }
+//     type Two = { two?: string; $typeName?: string }
 //     type SRC = {
 //         __union: One | Two
 //         __resolve: {
 //             on_One?: One
 //             on_Two?: Two
 //         }
-//         __typename?: 'One' | 'Two'
+//         $typeName?: 'One' | 'Two'
 //     }
 //     type DST = {
 //         on_One?: {
 //             one?: true
 //         }
-//         __typename?: 1
+//         $typeName?: 1
 //         // on_Two: {
 //         //     two: 1
 //         // }
@@ -595,7 +595,7 @@ test(
 // }
 
 // {
-//     type One = { one: string; __typename: string }
+//     type One = { one: string; $typeName: string }
 //     const x: ObjectFieldsSelection<One, { one?: true }> = {} as any
 //     x.one
 // }

@@ -16,7 +16,7 @@ export const unionType = (type: GraphQLUnionType, _: RenderContext) => {
     typeObj[`on_${t.name}`] = { type: t.name };
   });
 
-  typeObj.__typename = { type: 'String' };
+  typeObj.$typeName = { type: 'String' };
 
   return typeObj;
 };

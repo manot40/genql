@@ -17,7 +17,7 @@ export const unionType = (type: GraphQLUnionType, ctx: RenderContext) => {
     typeNames = typeNames.sort();
   }
   ctx.addCodeBlock(
-    `${typeComment(type)}export type ${type.name} = (${typeNames.join(' | ')}) & { __isUnion?: true }`
+    `${typeComment(type)}export type ${type.name} = (${typeNames.join(' | ')}) & { $isUnion?: true }`
   );
 };
 
@@ -34,7 +34,7 @@ export const unionType = (type: GraphQLUnionType, ctx: RenderContext) => {
 //   __resolve: {
 //     ${resolveContent}
 //   }
-//   __typename?: string
+//   $typeName?: string
 // }`,
 //     )
 // }

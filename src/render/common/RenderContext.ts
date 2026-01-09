@@ -77,7 +77,7 @@ export class RenderContext {
     else return;
   }
 
-  toCode(parser?: BuiltInParserName | 'skip', pretty = false) {
+  toCode(parser?: BuiltInParserName, pretty = false) {
     const blocks = [...this.codeBlocks];
 
     if (parser && (parser === 'typescript' || parser === 'babel')) {
@@ -87,7 +87,7 @@ export class RenderContext {
 
     if (parser) {
       const whiteSpaced = blocks.join('\n\n');
-      if (pretty && parser !== 'skip') return prettify(whiteSpaced, parser);
+      if (pretty) return prettify(whiteSpaced, parser);
       return whiteSpaced;
     }
 

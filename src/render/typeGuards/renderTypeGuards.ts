@@ -5,9 +5,9 @@ import { RenderContext } from '../common/RenderContext';
 const renderTypeGuard = (target: string, possible: string[]) => {
   return `
     const ${target}_possibleTypes: string[] = [${possible.map((t) => `'${t}'`).join(',')}]
-    export const is${target} = (obj?: { __typename?: any } | null): obj is ${target} => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "is${target}"')
-      return ${target}_possibleTypes.includes(obj.__typename)
+    export const is${target} = (obj?: { $typeName?: any } | null): obj is ${target} => {
+      if (!obj?.$typeName) throw new Error('$typeName is missing in "is${target}"')
+      return ${target}_possibleTypes.includes(obj.$typeName)
     }
     `;
 };

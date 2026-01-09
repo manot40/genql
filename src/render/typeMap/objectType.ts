@@ -49,7 +49,7 @@ export const objectType = (
   }
 
   if (!isEmpty(typeObj)) {
-    typeObj.__typename = { type: 'String' };
+    typeObj.$typeName = { type: 'String' };
   }
 
   // const scalar = Object.keys(type.getFields())

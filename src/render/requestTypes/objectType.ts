@@ -36,12 +36,10 @@ export const objectType = (type: GraphQLObjectType | GraphQLInterfaceType, ctx: 
 
     if (argsPresent) {
       if (resolvable) {
-        types.push(
-          `(${requestTypeName(resolvedType)} & { __args${argsOptional ? '?' : ''}: ${argsString} })`
-        );
+        types.push(`(${requestTypeName(resolvedType)} & { $args${argsOptional ? '?' : ''}: ${argsString} })`);
       } else {
-        // TODO if i want to add __directive support, i need to make this __args optional
-        types.push(`{ __args: ${argsString} }`);
+        // TODO if i want to add $directive support, i need to make this $args optional
+        types.push(`{ $args: ${argsString} }`);
       }
       // if (resolvable) {
       //     types.push(`[${argsString},${requestTypeName(resolvedType)}]`)
@@ -70,8 +68,8 @@ export const objectType = (type: GraphQLObjectType | GraphQLInterfaceType, ctx: 
     fieldStrings = fieldStrings.concat(interfaceProperties);
   }
 
-  fieldStrings.push('__typename?: boolean | number');
-  fieldStrings.push('__scalar?: boolean | number');
+  fieldStrings.push('$typeName?: boolean | number');
+  fieldStrings.push('$scalar?: boolean | number');
 
   // add indentation
   fieldStrings = fieldStrings.map((x) =>

@@ -13,7 +13,7 @@ export const interfaceType = (type: GraphQLInterfaceType, ctx: RenderContext) =>
     objectType(type, ctx);
   } else {
     ctx.addCodeBlock(
-      `${typeComment(type)}export type ${type.name} = (${typeNames.join(' | ')}) & { __isUnion?: true }`
+      `${typeComment(type)}export type ${type.name} = (${typeNames.join(' | ')}) & { $isUnion?: true }`
     );
   }
 };
@@ -45,7 +45,7 @@ export const interfaceType = (type: GraphQLInterfaceType, ctx: RenderContext) =>
 //   __resolve: {
 //     ${resolveContent}
 //   }
-//   __typename?: string
+//   $typeName?: string
 // }`,
 //     )
 // }

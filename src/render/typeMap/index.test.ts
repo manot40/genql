@@ -120,7 +120,7 @@ test('objectType', () =>
             b: ['[[[Int!]!]!]!', 'Int'],
           },
         },
-        __typename: { type: 'String' },
+        $typeName: { type: 'String' },
 
         // scalar: ['scalar', 'optionalArgScalar', 'nestedArg'],
       },
@@ -128,12 +128,12 @@ test('objectType', () =>
         some: { type: 'String' },
         on_ImplementorA: { type: 'ImplementorA' },
         on_ImplementorB: { type: 'ImplementorB' },
-        __typename: { type: 'String' },
+        $typeName: { type: 'String' },
 
         // scalar: ['some'],
       },
       ObjectWithoutScalar: {
-        __typename: { type: 'String' },
+        $typeName: { type: 'String' },
         interface: { type: 'Interface' },
         object: { type: 'Object' },
       },
@@ -168,7 +168,7 @@ test('unionType', () =>
         on_Some: { type: 'Some' },
         on_Other: { type: 'Other' },
         on_Another: { type: 'Another' },
-        __typename: { type: 'String' },
+        $typeName: { type: 'String' },
       },
     },
     true

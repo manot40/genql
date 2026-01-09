@@ -47,7 +47,7 @@ ${renderClientTypesImports({ mutationType, queryType, subscriptionType })}
   export const createClient = ${renderClientCode(ctx)}
 
   export const everything = {
-    __scalar: true
+    $scalar: true
   }
   `);
 
@@ -58,7 +58,7 @@ ${renderClientTypesImports({ mutationType, queryType, subscriptionType })}
         )}> = FieldsSelection<${queryType.name}, fields>
         export const generateQueryOp: (fields: ${requestTypeName(
           queryType
-        )} & { __name?: string }) => GraphqlOperation = function(fields) {
+        )} & { $name?: string }) => GraphqlOperation = function(fields) {
         return generateGraphqlOperation('query', typeMap.Query!, fields as any)
       }
     `);
@@ -70,7 +70,7 @@ ${renderClientTypesImports({ mutationType, queryType, subscriptionType })}
         )}> = FieldsSelection<${mutationType.name}, fields>
         export const generateMutationOp: (fields: ${requestTypeName(
           mutationType
-        )} & { __name?: string }) => GraphqlOperation = function(fields) {
+        )} & { $name?: string }) => GraphqlOperation = function(fields) {
         return generateGraphqlOperation('mutation', typeMap.Mutation!, fields as any)
       }
     `);
@@ -82,7 +82,7 @@ ${renderClientTypesImports({ mutationType, queryType, subscriptionType })}
         )}> = FieldsSelection<${subscriptionType.name}, fields>
         export const generateSubscriptionOp: (fields: ${requestTypeName(
           subscriptionType
-        )} & { __name?: string }) => GraphqlOperation = function(fields) {
+        )} & { $name?: string }) => GraphqlOperation = function(fields) {
         return generateGraphqlOperation('subscription', typeMap.Subscription!, fields as any)
       }
     `);
@@ -125,7 +125,7 @@ function renderClientType({ queryType, mutationType, subscriptionType }) {
   if (queryType) {
     interfaceContent += `
       query<R extends ${requestTypeName(queryType)}>(
-          request: R & { __name?: string },
+          request: R & { $name?: string },
       ): Promise<FieldsSelection<${queryType.name}, R>>
       `;
   }
@@ -133,7 +133,7 @@ function renderClientType({ queryType, mutationType, subscriptionType }) {
   if (mutationType) {
     interfaceContent += `
       mutation<R extends ${requestTypeName(mutationType)}>(
-          request: R & { __name?: string },
+          request: R & { $name?: string },
       ): Promise<FieldsSelection<${mutationType.name}, R>>
       `;
   }
@@ -142,7 +142,7 @@ function renderClientType({ queryType, mutationType, subscriptionType }) {
   // if (subscriptionType) {
   //     interfaceContent += `
   //   subscription<R extends ${requestTypeName(subscriptionType)}>(
-  //       request: R & { __name?: string },
+  //       request: R & { $name?: string },
   //   ): Observable<FieldsSelection<${subscriptionType.name}, R>>
   //   `
   // }

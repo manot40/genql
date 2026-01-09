@@ -32,10 +32,10 @@ export interface GraphqlOperation {
 }
 
 const parseRequest = (request: Request | undefined, ctx: Context, path: string[]): string => {
-  if (typeof request === 'object' && '__args' in request) {
-    const args: any = request.__args;
+  if (typeof request === 'object' && '$args' in request) {
+    const args: any = request.$args;
     let fields: Request | undefined = { ...request };
-    delete fields.__args;
+    delete fields.$args;
     const argNames = Object.keys(args);
 
     if (argNames.length === 0) {
@@ -75,7 +75,7 @@ const parseRequest = (request: Request | undefined, ctx: Context, path: string[]
 
     let scalarFieldsFragment: string | undefined;
 
-    if (fieldNames.includes('__scalar')) {
+    if (fieldNames.includes('$scalar')) {
       const falsyFieldNames = new Set(Object.keys(fields).filter((k) => !Boolean(fields[k])));
       if (scalarFields?.length) {
         ctx.fragmentCounter++;
@@ -90,7 +90,7 @@ const parseRequest = (request: Request | undefined, ctx: Context, path: string[]
     }
 
     const fieldsSelection = fieldNames
-      .filter((f) => !['__scalar', '__name'].includes(f))
+      .filter((f) => !['$scalar', '$name'].includes(f))
       .map((f) => {
         const parsed = parseRequest(fields[f], ctx, [...path, f]);
 
@@ -142,7 +142,7 @@ export const generateGraphqlOperation = (
         })})`
       : '';
 
-  const operationName = fields?.__name || '';
+  const operationName = fields?.$name || '';
 
   return {
     query: [`${operation} ${operationName}${varsString}${result}`, ...ctx.fragments].join(','),

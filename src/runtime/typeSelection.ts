@@ -10,15 +10,15 @@
 
 3. HandleObject handles object types
 
-4. Handle__scalar adds all scalar properties excluding non scalar props
+4. Handle$scalar adds all scalar properties excluding non scalar props
 */
 
 export type FieldsSelection<SRC extends Anify<DST> | undefined, DST> = {
   scalar: SRC;
-  union: Handle__isUnion<SRC, DST>;
+  union: Handle$isUnion<SRC, DST>;
   object: HandleObject<SRC, DST>;
   array: SRC extends Nil ? never : SRC extends Array<infer T | null> ? Array<FieldsSelection<T, DST>> : never;
-  __scalar: Handle__scalar<SRC, DST>;
+  $scalar: Handle$scalar<SRC, DST>;
   never: never;
 }[DST extends Nil
   ? 'never'
@@ -28,10 +28,10 @@ export type FieldsSelection<SRC extends Anify<DST> | undefined, DST> = {
       ? 'scalar'
       : SRC extends any[]
         ? 'array'
-        : SRC extends { __isUnion?: any }
+        : SRC extends { $isUnion?: any }
           ? 'union'
-          : DST extends { __scalar?: any }
-            ? '__scalar'
+          : DST extends { $scalar?: any }
+            ? '$scalar'
             : DST extends {}
               ? 'object'
               : 'never'];
@@ -54,7 +54,7 @@ type HandleObject<SRC extends Anify<DST>, DST> = DST extends boolean
         //   }[keyof DST]
       >;
 
-type Handle__scalar<SRC extends Anify<DST>, DST> = SRC extends Nil
+type Handle$scalar<SRC extends Anify<DST>, DST> = SRC extends Nil
   ? never
   : Pick<
       // continue processing fields that are in DST, directly pass SRC type if not in DST
@@ -75,12 +75,12 @@ type Handle__scalar<SRC extends Anify<DST>, DST> = SRC extends Nil
       }[keyof SRC]
     >;
 
-type Handle__isUnion<SRC extends Anify<DST>, DST> = SRC extends Nil ? never : Omit<SRC, FieldsToRemove>; // just return the union type
+type Handle$isUnion<SRC extends Anify<DST>, DST> = SRC extends Nil ? never : Omit<SRC, FieldsToRemove>; // just return the union type
 
 type Scalar = string | number | Date | boolean | null | undefined;
 
 type Anify<T> = { [P in keyof T]?: any };
 
-type FieldsToRemove = '__isUnion' | '__scalar' | '__name' | '__args';
+type FieldsToRemove = '$name' | '$args' | '$scalar' | '$isUnion';
 
 type Nil = undefined | null;

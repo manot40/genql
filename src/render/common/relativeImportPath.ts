@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 
 export const relativeImportPath = (from: string, to: string) => {
   const fromResolved = path.relative(from, to);
