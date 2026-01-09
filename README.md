@@ -50,7 +50,7 @@ client
   .query({
     countries: {
       // pass arguments to the query
-      __args: {
+      $args: {
         filter: {
           currency: {
             eq: 'EUR',
@@ -61,7 +61,7 @@ client
       code: true,
       nestedField: {
         // fetch all scalar fields
-        __scalar: true,
+        $scalar: true,
       },
     },
   })
@@ -89,7 +89,7 @@ Genql has a lot of benefits over writing graphql queries by hand:
 
 - Writing queries is faster thanks to TypeScript auto completion
 - You can safely update your schema and be sure your queries are still valid
-- You can fetch all scalar fields in a type with `__scalar: true`
+- You can fetch all scalar fields in a type with `$scalar: true`
 - No `graphql` package dependency, no runtime parsing of queries
 - You have to generate the client only after your schema changes, not after every query change
 
