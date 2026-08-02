@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.1.2
+
+[compare changes](https://github.com/manot40/genql/compare/v1.1.0...v1.1.2)
+
+### 🩹 Fixes
+
+- Code injection via JSDoc comment escape (CWE-94) ([e498f22](https://github.com/manot40/genql/commit/e498f22))
+- Package.json versioning mismatch ([c8b7e81](https://github.com/manot40/genql/commit/c8b7e81))
+
+### 🏡 Chore
+
+- **release:** V1.1.0 ([017e9ef](https://github.com/manot40/genql/commit/017e9ef))
+- Bump deps ([5a0468f](https://github.com/manot40/genql/commit/5a0468f))
+
+### ❤️ Contributors
+
+- Manot40 ([@manot40](https://github.com/manot40))
+
 ## v1.1.1
 
 [compare changes](https://github.com/manot40/genql/compare/v1.1.0...v1.1.1)
