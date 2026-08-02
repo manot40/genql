@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.1.3
+
+[compare changes](https://github.com/manot40/genql/compare/v1.1.2...v1.1.3)
+
+### 🏡 Chore
+
+- Versioning placeholder ([07056d3](https://github.com/manot40/genql/commit/07056d3))
+
+### ❤️ Contributors
+
+- Manot40 ([@manot40](https://github.com/manot40))
+
 ## v1.1.2
 
 [compare changes](https://github.com/manot40/genql/compare/v1.1.0...v1.1.2)
